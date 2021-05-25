@@ -29,15 +29,12 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         root.setPrefSize(800, 600);
 
-        Label label = new Label("Control & Conquer");
+        Label label = new Label("<< Player Board \n Enemy board >>");
 
         HBox hbox3 = new HBox();
         hbox3.getChildren().add(label);
         hbox3.setAlignment(Pos.CENTER);
-
-
         root.setTop(hbox3);
-
 
         enemyBoard = new Board(true, event -> {
             if (!running)
@@ -49,8 +46,9 @@ public class Main extends Application {
 
             enemyTurn = !cell.shoot();
 
-            if (enemyBoard.ships == 0) {
+            if (enemyBoard.ships == 1) {
                 System.out.println("YOU WIN");
+
                 System.exit(0);
             }
 
@@ -105,7 +103,7 @@ public class Main extends Application {
         // place enemy ships
         int type = 5;
 
-        while (type > 0) {
+        while (type > 1) {
             int x = random.nextInt(10);
             int y = random.nextInt(10);
 

@@ -34,40 +34,51 @@ public class Board extends Parent {
     }
 
     public boolean placeShip(Ship ship, int x, int y) {
-        if (canPlaceShip(ship, x, y)) {
+        if (canPlaceShip(ship, x, y))
+        {
             int length = ship.type;
 
-            if (ship.vertical) {
-                for (int i = y; i < y + length; i++) {
+            if (ship.vertical)
+            {
+                for (int i = y; i < y + length; i++)
+                {
                     Cell cell = getCell(x, i);
                     cell.ship = ship;
-                    if (!enemy) {
-                        cell.setFill(Color.WHITE);
+                    if (!enemy)
+                    {
+                        cell.setFill(Color.CORNFLOWERBLUE);
                         cell.setStroke(Color.GREEN);
                     }
                 }
             }
-            else {
-                for (int i = x; i < x + length; i++) {
-                    Cell cell = getCell(i, y);
-                    cell.ship = ship;
-                    if (!enemy) {
-                        cell.setFill(Color.WHITE);
-                        cell.setStroke(Color.GREEN);
+            else
+                {
+                    for (int i = x; i < x + length; i++)
+                    {
+                        Cell cell = getCell(i, y);
+                        cell.ship = ship;
+                        if (!enemy)
+                        {
+                            cell.setFill(Color.CORNFLOWERBLUE);
+                           cell.setStroke(Color.GREEN);
+                        }
                     }
                 }
-            }
-
             return true;
         }
-
         return false;
     }
 
+    /*
+    * Getting the cell that was clicked on.*
+    * */
     public Cell getCell(int x, int y) {
         return (Cell)((HBox)rows.getChildren().get(y)).getChildren().get(x);
     }
 
+    /*
+    * Checking if ship can be placed and isn't close to other ship.
+    * */
     private Cell[] getNeighbors(int x, int y) {
         Point2D[] points = new Point2D[] {
                 new Point2D(x - 1, y),
@@ -87,9 +98,14 @@ public class Board extends Parent {
         return neighbors.toArray(new Cell[0]);
     }
 
+    /*
+    * Main check for placing ship.
+    * */
     private boolean canPlaceShip(Ship ship, int x, int y) {
         int length = ship.type;
-
+        /*
+        * Checking spaces vertically
+        * */
         if (ship.vertical) {
             for (int i = y; i < y + length; i++) {
                 if (!isValidPoint(x, i))
@@ -108,24 +124,27 @@ public class Board extends Parent {
                 }
             }
         }
-        else {
-            for (int i = x; i < x + length; i++) {
-                if (!isValidPoint(i, y))
-                    return false;
-
-                Cell cell = getCell(i, y);
-                if (cell.ship != null)
-                    return false;
-
-                for (Cell neighbor : getNeighbors(i, y)) {
+        else
+            { //Checking spaces horizontally.
+                for (int i = x; i < x + length; i++)
+                {
                     if (!isValidPoint(i, y))
                         return false;
 
-                    if (neighbor.ship != null)
+                    Cell cell = getCell(i, y);
+                    if (cell.ship != null)
                         return false;
+
+                    for (Cell neighbor : getNeighbors(i, y))
+                    {
+                        if (!isValidPoint(i, y))
+                            return false;
+
+                        if (neighbor.ship != null)
+                            return false;
+                    }
                 }
             }
-        }
 
         return true;
     }
@@ -145,6 +164,9 @@ public class Board extends Parent {
 
         private Board board;
 
+        /*
+        * Size of tiles
+        * */
         public Cell(int x, int y, Board board) {
             super(30, 30);
             this.x = x;
@@ -153,6 +175,11 @@ public class Board extends Parent {
             setFill(Color.BLACK);
             setStroke(Color.GREEN);
         }
+
+        /*
+        * Changing color if shot.
+        * 2nd if changes color to red if ship was on that tile.
+        * */
 
         public boolean shoot() {
             wasShot = true;
