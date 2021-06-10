@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -26,6 +27,10 @@ public class Main extends Application {
     private Random random = new Random();
 
     private Parent createContent() {
+        Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+        alert1.setTitle("End game");
+        alert1.setHeaderText("YOU WIN");
+        alert1.setContentText(null);
         BorderPane root = new BorderPane();
         root.setPrefSize(800, 600);
 
@@ -47,7 +52,7 @@ public class Main extends Application {
             enemyTurn = !cell.shoot();
 
             if (enemyBoard.ships == 1) {
-                System.out.println("YOU WIN");
+                alert1.showAndWait();
 
                 System.exit(0);
             }
@@ -82,6 +87,10 @@ public class Main extends Application {
     }
 
     private void enemyMove() {
+        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+        alert2.setTitle("End game");
+        alert2.setHeaderText("YOU LOSE");
+        alert2.setContentText(null);
         while (enemyTurn) {
             int x = random.nextInt(10);
             int y = random.nextInt(10);
@@ -93,7 +102,7 @@ public class Main extends Application {
             enemyTurn = cell.shoot();
 
             if (playerBoard.ships == 0) {
-                System.out.println("YOU LOSE");
+                alert2.showAndWait();
                 System.exit(0);
             }
         }
